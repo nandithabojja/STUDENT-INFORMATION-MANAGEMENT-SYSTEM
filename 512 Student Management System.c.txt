@@ -1,0 +1,115 @@
+﻿// Student information management system 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+typedef struct {
+    int rollNumber;
+    char name[50];
+    char department[50];
+    float percentage;
+} Student;
+
+
+void addStudent(Student students[], int *size) {
+    printf("Enter roll number: ");
+    scanf("%d", &students[*size].rollNumber);
+    printf("Enter name: ");
+    scanf("%s", students[*size].name);
+    printf("Enter department: ");
+    scanf("%s", students[*size].department);
+    printf("Enter percentage: ");
+    scanf("%f", &students[*size].percentage);
+    (*size)++;
+}
+
+
+void deleteStudent(Student students[], int *size, int rollNumber) {
+    int i;
+    for (i = 0; i < *size; i++) {
+        if (students[i].rollNumber == rollNumber) {
+            for (int j = i; j < *size - 1; j++) {
+                students[j] = students[j + 1];
+            }
+            (*size)--;
+            printf("Student deleted successfully!\n");
+            return;
+        }
+    }
+    printf("Student not found!\n");
+}
+
+
+void searchStudent(Student students[], int size, int rollNumber) {
+    int i;
+    for (i = 0; i < size; i++) {
+        if (students[i].rollNumber == rollNumber) {
+            printf("Student found!\n");
+            printf("Name: %s\n", students[i].name);
+            printf("Department: %s\n", students[i].department);
+            printf("Percentage: %.2f%%\n", students[i].percentage);
+            return;
+        }
+    }
+    printf("Student not found!\n");
+}
+
+
+void displayStudents(Student students[], int size) {
+    int i;
+    printf("---------------------------------------------------------------\n");
+    printf("| Roll Number | Name          | Department    | Percentage |\n");
+    printf("---------------------------------------------------------------\n");
+    for (i = 0; i < size; i++) {
+        printf("| %-12d | %-12s | %-12s | %.2f%% |\n", students[i].rollNumber, students[i].name, students[i].department, students[i].percentage);
+    }
+    printf("---------------------------------------------------------------\n");
+}
+
+
+int main() {
+    Student students[100];
+    int size = 0;
+    int choice;
+
+
+    while (1) {
+        printf("Student Information Management System\n");
+        printf("1. Add Student\n");
+        printf("2. Delete Student\n");
+        printf("3. Search Student\n");
+        printf("4. Display Students\n");
+        printf("5. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+
+        switch (choice) {
+            case 1:
+                addStudent(students, &size);
+                break;
+            case 2:
+                printf("Enter roll number to delete: ");
+                int rollNumber;
+                scanf("%d", &rollNumber);
+                deleteStudent(students, &size, rollNumber);
+                break;
+            case 3:
+                printf("Enter roll number to search: ");
+                scanf("%d", &rollNumber);
+                searchStudent(students, size, rollNumber);
+                break;
+            case 4:
+                displayStudents(students, size);
+                break;
+            case 5:
+                exit(0);
+            default:
+                printf("Invalid choice!\n");
+        }
+    }
+
+
+    return 0;
+}
